@@ -8,6 +8,14 @@ vi.mock('../../api/todosService/fetchTodos/fetchTodos', () => ({
     fetchTodos: vi.fn(),
 }));
 
+function renderUseFetchTodosHook() {
+    return renderHook(useFetchTodos, {
+        wrapper: ({ children }) => (
+            <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        ),
+    });
+}
+
 let queryClient: QueryClient;
 
 describe("useFetchTodos", () => {
@@ -24,11 +32,7 @@ describe("useFetchTodos", () => {
 
     it('should have the correct initial state', () => {
         // arrange and act
-        const { result } = renderHook(() => useFetchTodos(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-            ),
-        });
+        const { result } = renderUseFetchTodosHook();
         const { data, isError, isPending } = result.current;
 
         // assert
@@ -45,11 +49,7 @@ describe("useFetchTodos", () => {
         ]);
 
         // act
-        const { result } = renderHook(() => useFetchTodos(), {
-            wrapper: ({ children }) => (
-                <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-            ),
-        });
+        const { result } = renderUseFetchTodosHook();
 
         // assert
         await waitFor(() => {
