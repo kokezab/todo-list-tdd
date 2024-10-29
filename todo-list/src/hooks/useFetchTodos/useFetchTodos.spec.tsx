@@ -62,4 +62,18 @@ describe("useFetchTodos", () => {
         });
     });
     
+    it("should return data as undefined, isError as true and isPending as false", async () => {
+        // arrange
+        (fetchTodos as Mock).mockRejectedValue("An error occurred");
+
+        // act
+        const {result} = renderUseFetchTodosHook();
+        
+        // assert
+        await waitFor(() => {
+            expect(result.current.data).toBe(undefined);
+            expect(result.current.isError).toBe(true);
+            expect(result.current.isPending).toBe(false);
+        });
+    });
 });
